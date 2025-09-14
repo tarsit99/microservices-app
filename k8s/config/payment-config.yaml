@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-config
+  labels:
+    app: payment-services
+data:
+  PORT: "3002"
+  LOG_LEVEL: "info"
+  PROVIDER: "demo"
+  CURRENCY: "INR"

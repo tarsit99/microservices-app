@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-services
+  template:
+    metadata:
+      labels:
+        app: payment-services
+    spec:
+      containers:
+        - name: payment-services
+          image: tarsi/payment-services:latest # <-- use your actual image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3002 # <-- plain ASCII space, no NBSP
+          env:
+            - name: PORT
+              value: "3002"
+          readinessProbe:
+            httpGet:
+              path: /users
+              port: 3002
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /users
+              port: 3002
+            initialDelaySeconds: 10
+            periodSeconds: 20

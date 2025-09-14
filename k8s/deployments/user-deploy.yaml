@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: tarsi/user-services:latest # <-- use your actual image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000 # <-- plain ASCII space, no NBSP
+          env:
+            - name: PORT
+              value: "3000"
+          readinessProbe:
+            httpGet:
+              path: /users
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /users
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 20
