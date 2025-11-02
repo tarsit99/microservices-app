@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
+  namespace: dev  # <-- Added namespace
 spec:
   replicas: 1
   selector:
@@ -14,14 +15,25 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: tarsi/user-services:latest # <-- use your actual image
+          image: tarsi/user-services:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 3000 # <-- plain ASCII space, no NBSP
+              containerPort: 3000
           env:
             - name: PORT
               value: "3000"
+
+          # --- THIS IS THE NEW SECTION ---
+          resources:
+            requests:
+              memory: "64Mi"  # Starting memory
+              cpu: "100m"     # Starting CPU (0.1 core)
+            limits:
+              memory: "128Mi" # Max memory
+              cpu: "500m"     # Max CPU (0.5 core)
+          # --- END NEW SECTION ---
+
           readinessProbe:
             httpGet:
               path: /users

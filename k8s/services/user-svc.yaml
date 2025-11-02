@@ -1,13 +1,12 @@
----
 apiVersion: v1
 kind: Service
 metadata:
   name: user-service
 spec:
+  type: ClusterIP  # <-- Changed from NodePort
   selector:
-    app: user-service
+    app: user-service # <-- This must match the label in your user-deploy.yaml
   ports:
     - port: 3000
       targetPort: 3000
-      nodePort: 30082
-  type: NodePort
+# <-- Removed the nodePort line

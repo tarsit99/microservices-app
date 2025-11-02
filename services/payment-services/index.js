@@ -44,7 +44,7 @@ const PORT = process.env.PORT || 3002;
 app.use(express.json());
 
 let payments = [];
-app.get('/health', (_req, res) => res.sendStatus(200));   // <--
+app.get('/health', (_req, res) => res.sendStatus(200));
 app.get('/payments', (_req, res) => res.json(payments));
 app.post('/payments', (req, res) => {
   payments.push(req.body);
