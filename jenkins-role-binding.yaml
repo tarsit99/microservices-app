@@ -1,0 +1,15 @@
+Set-Content -Path k8s/jenkins-role-binding.yaml -Value @'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jenkins-deploy-binding
+  namespace: dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jenkins-deployer
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+  namespace: jenkins
+'@
